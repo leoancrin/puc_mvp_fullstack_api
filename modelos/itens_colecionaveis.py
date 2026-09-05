@@ -1,8 +1,8 @@
 from sqlalchemy import Integer, String, ForeignKey, Float
 from sqlalchemy.orm import Mapped, mapped_column
-from modelos import base
+from extensions import db
 
-class ItensColecionaveis(base.Base):
+class ItensColecionaveis(db.Model):
     __tablename__ = 'itens_colecionaveis'
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
