@@ -25,7 +25,7 @@ def metodo_cadastrar_tipos():
 
         tipo_existente = db.session.execute(select_tipo_pelo_nome).scalar_one_or_none()
         if tipo_existente:
-            return jsonify({"Erro":"Tipo já cadastrado"}), 400
+            return jsonify({"Erro":"Tipo já cadastrado"}), 409
 
         db.session.add(tipo_cadastrado)
         db.session.commit()
@@ -59,7 +59,10 @@ def metodo_alterar_tipos():
    
     try:   
         select_tipo_por_id = db.select(TipoItemColecionavel).filter_by(id_tipo=id_requisicao)   
-        tipo_a_alterar = db.session.execute(select_tipo_por_id).scalar_one()
+        tipo_a_alterar = db.session.execute(select_tipo_por_id).scalar_one_or_none()
+
+        if tipo_a_alterar is None:
+            return jsonify({"mensagem":"Tipo não existe para ser alterado"}), 404
 
         tipo_a_alterar.tipo_item = tipo_requisicao
            
@@ -80,17 +83,21 @@ def metodo_deletar_tipos():
     valida_tipo_texto(tipo_requisicao)
 
     try:
-        select_item_colecionavel = db.select(ItensColecionaveis).filter_by(tipo=id_requisicao)
-        tipo_existente_item = db.session.execute(select_item_colecionavel).scalar_one_or_none()
-
-        if tipo_existente_item:
-            return jsonify({"Erro ao deletar tipo": "Existe item com esse tipo definido"}), 400
-
         select_tipo_a_ser_deletado = db.select(TipoItemColecionavel).filter_by(id_tipo=id_requisicao)
-        tipo_a_ser_deletado = db.session.execute(select_tipo_a_ser_deletado).scalar_one()
+        tipo_a_ser_deletado = db.session.execute(select_tipo_a_ser_deletado).scalar_one_or_none()
+
+        if tipo_a_ser_deletado is None:
+            return jsonify({"Erro ao deletar tipo": "Tipo inexistente"}), 404
 
         if tipo_a_ser_deletado.tipo_item != tipo_requisicao:
-            return jsonify({"Erro ao deletar tipo": "Verifique se o nome do tipo está correto"}), 400
+            return jsonify({"Erro ao deletar tipo": "Verifique se o nome do tipo está correto"}), 422
+
+        select_item_colecionavel = db.select(ItensColecionaveis).filter_by(tipo=id_requisicao)
+        tipo_existente_no_item = db.session.execute(select_item_colecionavel).scalar_one_or_none()
+
+        if tipo_existente_no_item:
+            return jsonify({"Erro ao deletar tipo": "Existe item com esse tipo definido"}), 400
+
 
         db.session.delete(tipo_a_ser_deletado) 
         db.session.commit()
