@@ -90,13 +90,13 @@ def metodo_deletar_tipos():
             return jsonify({"Erro ao deletar tipo": "Tipo inexistente"}), 404
 
         if tipo_a_ser_deletado.tipo_item != tipo_requisicao:
-            return jsonify({"Erro ao deletar tipo": "Verifique se o nome do tipo está correto"}), 422
+            return jsonify({"Erro ao deletar tipo": "Verifique se o nome do tipo está correto"}), 409
 
         select_item_colecionavel = db.select(ItensColecionaveis).filter_by(tipo=id_requisicao)
         tipo_existente_no_item = db.session.execute(select_item_colecionavel).scalar_one_or_none()
 
         if tipo_existente_no_item:
-            return jsonify({"Erro ao deletar tipo": "Existe item com esse tipo definido"}), 400
+            return jsonify({"Erro ao deletar tipo": "Existe item com esse tipo definido"}), 409
 
 
         db.session.delete(tipo_a_ser_deletado) 
