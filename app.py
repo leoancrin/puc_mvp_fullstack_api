@@ -24,7 +24,7 @@ with app.app_context():
     db.create_all()
 
 # tags
-tipo_item_tag = Tag(name="Tipos de item colecionável", description="Realiza CRUD para os tipos de itens colecionáveis na base de dados")
+tipo_item_tag = Tag(name="Tipo de item colecionável", description="Realiza CRUD para os tipos de itens colecionáveis na base de dados")
 item_colecionavel_tag = Tag(name="Itens colecionáveis", description="Realiza CRUD para os itens colecionáveis na base de dados")    
     
 @app.route("/")
@@ -51,7 +51,7 @@ def cadastrar_tipos(body: TipoItemBodySomenteTipoItem):
          })
 def consultar_tipos():
     """
-        Consulta todos os tipo de item colecionável cadastrados
+        Consulta todos os tipos de itens cadastrados
     """
     return metodo_consultar_tipos()
 
@@ -63,7 +63,7 @@ def consultar_tipos():
          })
 def alterar_tipos(body: TipoItemBodyCompleto):
     """
-        Altera um tipo de item colecionável cadastrado anteriormente
+        Altera um tipo de item cadastrado anteriormente
     """
     return metodo_alterar_tipos() 
 
@@ -72,27 +72,39 @@ def alterar_tipos(body: TipoItemBodyCompleto):
                 200: DeletaTipoItemSchema,
                 400: ErroSchema,
                 404: ErroSchema,
-                422: ErroSchema
+                409: ErroSchema
             })
 def deletar_tipos(body: TipoItemBodyCompleto):
     """
-        Deleta um tipo de item colecionável existente
+        Deleta um tipo de item colecionável cadastrado na base
     """
     return metodo_deletar_tipos() 
 
 # Rotas relacionadas aos itens 
 @app.post('/cadastrar/itens', tags=[item_colecionavel_tag])
 def cadastrar_itens():
+    """
+        Cadastra um item colecionável
+    """
     return "<p>Cadastrar itens ainda não implementado!</p>"
 
 @app.get('/consultar/itens', tags=[item_colecionavel_tag])
 def consultar_itens():
+    """
+        Consulta todos os item colecionáveis existentes
+    """
     return "<p>Consultar itens ainda não implementado!</p>"
 
 @app.put('/alterar/itens', tags=[item_colecionavel_tag])
 def alterar_itens():
+    """
+        Altera um item colecionável cadastrado anteriormente
+    """
     return "<p>Alterar itens ainda não implementado!</p>"
 
 @app.delete('/deletar/itens', tags=[item_colecionavel_tag])
 def deletar_itens():
+    """
+        Deleta item colecionável cadastrado
+    """
     return "<p>Deletar itens ainda não implementado!</p>"
