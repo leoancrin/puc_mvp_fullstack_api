@@ -1,8 +1,6 @@
-from flask import Flask, request, jsonify
+from flask import Flask
 
 from extensions import db
-from modelos.itens_colecionaveis import ItensColecionaveis
-from modelos.tipos_item import TipoItemColecionavel
 
 from metodos.metodos_tipo_item import *
 
@@ -19,11 +17,11 @@ db.init_app(app)
 with app.app_context():
     db.create_all()
     
-# Rotas
 @app.route("/")
 def hello_world():
     return "<p>Hello, World!</p>"
 
+# Rotas relacionadas aos tipos de itens
 @app.route("/cadastrar/tipos", methods=['POST'])
 def cadastrar_tipos():
     return metodo_cadastrar_tipos()
@@ -39,3 +37,20 @@ def alterar_tipos():
 @app.route("/deletar/tipos", methods=['DELETE'])
 def deletar_tipos():
     return metodo_deletar_tipos() 
+
+# Rotas relacionadas aos itens 
+@app.route("/cadastrar/itens", methods=['POST'])
+def cadastrar_itens():
+    return "<p>Cadastrar itens ainda não implementado!</p>"
+
+@app.route("/consultar/itens", methods=['GET'])
+def consultar_itens():
+    return "<p>Consultar itens ainda não implementado!</p>"
+
+@app.route("/alterar/itens", methods=['PUT'])
+def alterar_itens():
+    return "<p>Alterar itens ainda não implementado!</p>"
+
+@app.route("/deletar/itens", methods=['DELETE'])
+def deletar_itens():
+    return "<p>Deletar itens ainda não implementado!</p>"
