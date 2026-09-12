@@ -7,7 +7,7 @@ Este repositório tem por função apresentar o código desenvolvido para uma AP
 
 ### Funções da API
 
-A API permite realizar operações CRUD tanto para os **tipos de itens** como para os próprios **itens colecionáveis**.
+A API permite realizar operações CRUD tanto para os **tipos de itens** como para os próprios **itens colecionáveis**. Um tipo de item é uma classificação genérica, como livro, filme, dvd, selos etc. Já um item é por exemplo o livro Moby Dick, o filme Matrix.
 
 Para os tipos:
 * Cadastrar um tipo de item
@@ -38,7 +38,7 @@ Por último, basta executar o comando na pasta onde foi incluído o app.py
 Maiores dúvidas sobre o flask basta seguir esse link
 > https://flask.palletsprojects.com/en/stable/quickstart/
 
-#### Regras
+### Regras
 
 1. Um tipo de item somente pode ser deletado se não houver **nenhum** item cadastrado para aquele tipo. Nesse caso primeiro delete os itens vinculados e depois realize a deleção do tipo específico.
 2. Outras regras e respostas podem ser consultadas pelo link, após executar a API
