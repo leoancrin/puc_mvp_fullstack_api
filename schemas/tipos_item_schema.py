@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional, List
+from typing import List
 
 class TipoItemSchema(BaseModel):
     """ 
@@ -14,17 +14,24 @@ class ListTipoItemSchema(BaseModel):
     """
     tipos:List[TipoItemSchema]
 
+class CadastraTipoItemSchema(BaseModel):
+    """ 
+        Representa um cadastro de um tipo de item no banco de dados
+    """
+    tipo_item: str = "Quadrinhos"
+    mensagem: str = "Tipo cadastrado com sucesso"    
+
 class AtualizaTipoItemSchema(BaseModel):
     """ 
         Representa o retorno da atualização de um tipo de item
     """
     id_tipo: int = 1
     tipo_item: str = "Quadrinhos"
-    mensagem: str
+    mensagem: str = "Tipo alterado com sucesso"
 
 class DeletaTipoItemSchema(BaseModel):
     """ 
         Representa o retorno da deleção de um tipo de item
     """
     tipo_item: str = "Quadrinhos"
-    mensagem: str    
+    mensagem: str = "Tipo deletado com sucesso"  
