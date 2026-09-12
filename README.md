@@ -5,6 +5,8 @@ Repositório das APIs para o MVP desenvolvido na disciplina Desenvolvimento Full
 
 Este repositório tem por função apresentar o código desenvolvido para uma API simples de itens colecionáveis. O objetivo é permitir ao usuário ter uma base de dados sobre os itens colecionáveis que ele possui.
 
+---
+
 ### Funções da API
 
 A API permite realizar operações tanto para os **tipos de itens** como para os próprios **itens colecionáveis**. Um tipo de item é uma classificação genérica, como *livro, filme, dvd, selos* etc. Já um item é por exemplo o livro *Moby Dick*, o filme *Matrix*.
@@ -23,6 +25,8 @@ A API permite realizar operações tanto para os **tipos de itens** como para os
     * Alterar um item
     * Deletar um item
 
+---
+
 ### Uso da API
 Ela roda em **AMBIENTE LOCAL**. Para tanto são necessário executar alguns passos
 1. O primeiro passo é instalar o python, podendo ser feito conforme o link abaixo para o seu ambiente (Windows, Linux ou macOS)
@@ -40,11 +44,15 @@ Ela roda em **AMBIENTE LOCAL**. Para tanto são necessário executar alguns pass
 Maiores dúvidas sobre o flask basta seguir esse link
 > https://flask.palletsprojects.com/en/stable/quickstart/
 
+---
+
 ### Regras
 
 1. Um tipo de item somente pode ser deletado se não houver **nenhum** item cadastrado para aquele tipo. Nesse caso **primeiro delete os itens vinculados** e depois realize a deleção do tipo específico.
 2. Outras regras e respostas podem ser consultadas pelo link, após executar a API
 > http://localhost:5000/openapi/swagger
+
+---
 
 ### Banco de dados
 Caso o banco já esteja populado, basta deletar o arquivo no caminho `instance/database.sqlite3` que o mesmo será reconstruído na primeira nova execução da API.
