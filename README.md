@@ -41,3 +41,6 @@ Por último, basta executar o comando na pasta onde foi incluído o diretório
 
 Maiores dúvidas sobre o flask basta seguir esse link
 > https://flask.palletsprojects.com/en/stable/quickstart/
+
+### Banco de dados
+Caso o banco já esteja populado, basta deletar o arquivo instance/database.sqlite3 que o mesmo será reconstruído na execução da API.
