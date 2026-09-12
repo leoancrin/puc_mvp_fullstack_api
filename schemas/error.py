@@ -4,4 +4,4 @@ class ErroSchema(BaseModel):
     """ 
     Representa uma mensagem de erro
     """
-    mensagem: str
+    erro: str = "Erro ao processar sua requisição"
