@@ -18,7 +18,7 @@ Para os tipos:
 Para os itens:
 * Cadastrar um item
 * Consultar os itens existentes
-* consultar os itens de um tipo específico
+* Consultar os itens de um tipo específico
 * Alterar um item
 * Deletar um item
 
