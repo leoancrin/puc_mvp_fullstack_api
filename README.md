@@ -26,16 +26,16 @@ A API permite realizar operações tanto para os **tipos de itens** como para os
 ### Uso da API
 Ela roda em **AMBIENTE LOCAL**. Para tanto são necessário executar alguns passos
 1. O primeiro passo é instalar o python, podendo ser feito conforme o link abaixo para o seu ambiente (Windows, Linux ou macOS)
-    1. > https://www.python.org/downloads/
+> https://www.python.org/downloads/
 
-2. Após instalado o python, basta definir seu ambiente virtual, usando as instruções desse link, na parte **Virtual environments**
-    2. > https://flask.palletsprojects.com/en/stable/installation/
+2. Após instalado o python, basta definir seu ambiente virtual, usando as instruções desse link, na parte **Virtual environments**  
+> https://flask.palletsprojects.com/en/stable/installation/
 
-3. Após criado seu ambiente virtual basta rodar
-    3. > pip install -r requirements.txt
+3. Após criado seu ambiente virtual basta rodar  
+> pip install -r requirements.txt
 
-4. Por último, basta executar o comando na pasta onde foi incluído o app.py
-    4. > flask run
+4. Por último, basta executar o comando na pasta onde foi incluído o app.py  
+> flask run
 
 Maiores dúvidas sobre o flask basta seguir esse link
 > https://flask.palletsprojects.com/en/stable/quickstart/
