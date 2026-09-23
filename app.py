@@ -1,4 +1,5 @@
 from flask_openapi3 import Info, OpenAPI, Tag
+from flask_cors import CORS
 
 from extensions import db
 
@@ -14,6 +15,7 @@ from requisicao.itens_colecionaveis_request import *
 
 info = Info(title='API de itens colecionáveis', version='1.0.0')
 app = OpenAPI(__name__, info=info)
+CORS(app)
 
 # Configuração do SQLite
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.sqlite3"
