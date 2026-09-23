@@ -21,10 +21,10 @@ class TipoItemColecionavel (db.Model):
 """
 
 def receber_requisicao_sem_id():
-    dados = request.get_json()
+    dados = request.get_json(silent=True) or {}
 
     nome_item = dados.get("nome_item")
-    tipo_item = dados.get("tipo_item")
+    tipo_item = dados.get("tipo")
     valor_item = dados.get("valor_item")
 
     validar_requisicao_itens_sem_id(nome_item, tipo_item, valor_item)
@@ -33,18 +33,19 @@ def receber_requisicao_sem_id():
 
 def validar_requisicao_itens_sem_id(nome_item,tipo_item,valor_item):
     if not nome_item:
-        return jsonify({"Erro":"Nome do item é obrigatório"}), 400
+        raise ValueError("Nome do item é obrigatório")
     if not tipo_item:
-        return jsonify({"Erro":"Tipo do item é obrigatório"}), 400
-    if valor_item < 0.00:
-        return jsonify({"Erro":"Não permitido valor negativo"}), 400
+        raise ValueError("Tipo do item é obrigatório")
+    if float(valor_item) < 0.00:
+        raise ValueError("Não permitido valor negativo")    
+
 
 def receber_requisicao_completa():
     nome_item, tipo_item, valor_item = receber_requisicao_sem_id()
     id_item = request.get_json().get("id_item")
 
     if not id_item:
-        return jsonify({"Erro":"ID de identificação necessário"}), 400
+        raise ValueError("ID de identificação necessário")
 
     return id_item, tipo_item, nome_item, valor_item
 
@@ -52,14 +53,15 @@ def verifica_tipo_existente(tipo_requisicao):
     select_tipo_existente = db.select(TipoItemColecionavel).filter_by(tipo_item=tipo_requisicao)
     tipo_existe = db.session.execute(select_tipo_existente).scalar_one_or_none()
     if tipo_existe is None:
-        return jsonify({"Erro": "Tipo de item não existente"}),409
+        raise ValueError("Tipo de item não existente")
+    return tipo_existe
 
 
 def metodo_cadastrar_item():
 
-    nome_item_requisicao, tipo_item_requisicao, valor_item_requisicao = receber_requisicao_sem_id()
-
     try:
+        nome_item_requisicao, tipo_item_requisicao, valor_item_requisicao = receber_requisicao_sem_id()
+
         item_cadastrado = ItensColecionaveis(
             tipo = tipo_item_requisicao,
             nome_item = nome_item_requisicao,
@@ -87,13 +89,16 @@ def metodo_cadastrar_item():
 
         return jsonify(resposta), 200
 
+    except ValueError as ve:
+        return jsonify({"Erro": str(ve)}), 400
+
     except Exception as e:
         db.session.rollback()
         return jsonify({"Erro": "Erro nao identificado:" + str(e)}), 400
 
 def metodo_consultar_itens_colecionaveis():
     try:
-        select_todos_itens_colecionaveis = db.select(ItensColecionaveis).order_by(ItensColecionaveis.id_tipo)
+        select_todos_itens_colecionaveis = db.select(ItensColecionaveis).order_by(ItensColecionaveis.id_item)
         todos_itens = db.session.execute(select_todos_itens_colecionaveis).scalars().all()
     
         resposta = [
@@ -110,31 +115,32 @@ def metodo_consultar_itens_colecionaveis():
 
 def metodo_consultar_itens_colecionaveis_por_tipo(tipo_de_item):
 
-    tipo_requisicao = tipo_de_item
-
     try:
-        verifica_tipo_existente(tipo_requisicao)
+        tipo_existe = verifica_tipo_existente(tipo_de_item)
 
-        select_todos_itens_colecionaveis_por_tipo = db.select(ItensColecionaveis).filter_by(tipo=tipo_requisicao)
+        select_todos_itens_colecionaveis_por_tipo = db.select(ItensColecionaveis).filter_by(tipo=tipo_existe.id_tipo)
         todos_itens = db.session.execute(select_todos_itens_colecionaveis_por_tipo).scalars().all()
     
         resposta = [
             {"id_item": item.id_item,
-             "tipo": item.tipo,
+             "tipo": tipo_existe.tipo_item,
              "nome_item":item.nome_item,
              "valor_item":item.valor_item} 
              for item in todos_itens
             ]
         return jsonify(resposta), 200
+
+    except ValueError as ve:
+        return jsonify({"Erro": str(ve)}), 400
         
     except Exception as e:
         return jsonify({"Erro": "Erro nao identificado:" + str(e)}), 400
 
 def metodo_alterar_item_colecionável():
 
-    id_item_requisicao, tipo_item_requisicao, nome_item_requisicao, valor_item_requisicao = receber_requisicao_completa()
-
     try:
+        id_item_requisicao, tipo_item_requisicao, nome_item_requisicao, valor_item_requisicao = receber_requisicao_completa()
+
         verifica_tipo_existente(tipo_item_requisicao)
 
         select_item_por_id = db.select(ItensColecionaveis).filter_by(id_item=id_item_requisicao)
@@ -158,28 +164,31 @@ def metodo_alterar_item_colecionável():
 
         return jsonify(resposta), 200
 
+    except ValueError as ve:
+        return jsonify({"Erro": str(ve)}), 400
+
     except Exception as e:
         db.session.rollback()
         return jsonify({"Erro": "Erro nao identificado:" + str(e)}), 400
 
 def metodo_deletar_item_colecionável():
 
-    id_item_requisicao, tipo_item_requisicao, nome_item_requisicao, valor_item_requisicao = receber_requisicao_completa()
-
     try:
+        id_item_requisicao, tipo_item_requisicao, nome_item_requisicao, valor_item_requisicao = receber_requisicao_completa()
+
         verifica_tipo_existente(tipo_item_requisicao)
 
-        select_item_colecionavel = db.select(ItensColecionaveis).filter_by(tipo=id_item_requisicao)
+        select_item_colecionavel = db.select(ItensColecionaveis).filter_by(id_item=id_item_requisicao)
         item_a_ser_deletado = db.session.execute(select_item_colecionavel).scalar_one_or_none()
+
+        if item_a_ser_deletado is None:
+            return jsonify({"Erro":"Não existe item a ser deletado com esses dados"}), 404
 
         if item_a_ser_deletado.nome_item != nome_item_requisicao:
             return jsonify({"Erro":"Verifique o nome do item informado"}), 404
 
         if item_a_ser_deletado.tipo != tipo_item_requisicao:
             return jsonify({"Erro":"Verifique o tipo do item informado"}), 404
-
-        if item_a_ser_deletado.valor_item_requisicao != valor_item_requisicao:
-            return jsonify({"Erro":"Verifique o valor do item informado"}), 404
         
         db.session.delete(item_a_ser_deletado) 
         db.session.commit()
@@ -191,6 +200,9 @@ def metodo_deletar_item_colecionável():
                      }]
             
         return jsonify(resposta), 200
+
+    except ValueError as ve:
+        return jsonify({"Erro": str(ve)}), 400
     
     except Exception as e:
         db.session.rollback()

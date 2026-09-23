@@ -34,7 +34,7 @@ item_colecionavel_tag = Tag(name="Itens colecionáveis", description="Realiza CR
     
 @app.route("/")
 def hello_world():
-    return "<p>Hello, World!</p>"
+    return "<p>Bem vindo a minha API!</p>"
 
 # Rotas relacionadas aos tipos de itens
 @app.post('/cadastrar/tipos', tags=[tipo_item_tag], 
@@ -118,7 +118,9 @@ def consultar_itens_por_tipo(path: ItemColecionavelPorTipoPath):
     """
         Consulta todos os item colecionáveis existentes para um tipo de item específico
     """
-    return metodo_consultar_itens_colecionaveis_por_tipo(path)
+
+    tipo_item = path.tipo_item_colecionavel
+    return metodo_consultar_itens_colecionaveis_por_tipo(tipo_item)
 
 @app.put('/alterar/itens', tags=[item_colecionavel_tag],
          responses={
