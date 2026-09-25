@@ -36,6 +36,8 @@ def validar_requisicao_itens_sem_id(nome_item,tipo_item,valor_item):
         raise ValueError("Nome do item é obrigatório")
     if not tipo_item:
         raise ValueError("Tipo do item é obrigatório")
+    if valor_item is None:
+        raise ValueError("Preencha algum valor para o item")    
     if float(valor_item) < 0.00:
         raise ValueError("Não permitido valor negativo")    
 
