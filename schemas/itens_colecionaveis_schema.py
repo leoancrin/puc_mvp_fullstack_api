@@ -15,7 +15,7 @@ class ListItemColecionavelSchema(BaseModel):
     """ 
         Representa a lista retornada para os itens colecionaveis cadastrados
     """
-    itens:List[ItemColecionavelSchema]
+    List[ItemColecionavelSchema]
 
 class CadastraItemColecionavelSchema(BaseModel):
     """ 

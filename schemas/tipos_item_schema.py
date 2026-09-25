@@ -12,7 +12,7 @@ class ListTipoItemSchema(BaseModel):
     """ 
         Representa a lista retornada para os tipos de itens cadastrados
     """
-    tipos:List[TipoItemSchema]
+    List[TipoItemSchema]
 
 class CadastraTipoItemSchema(BaseModel):
     """ 
