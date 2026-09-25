@@ -33,9 +33,9 @@ def metodo_cadastrar_tipos():
         db.session.add(tipo_cadastrado)
         db.session.commit()
 
-        resposta = [{"tipo_item":tipo_requisicao,
+        resposta = {"tipo_item":tipo_requisicao,
                      "mensagem": "Tipo cadastrado com sucesso"
-                     }]
+                     }
 
         return jsonify(resposta), 200
     except Exception as e:
@@ -76,10 +76,10 @@ def metodo_alterar_tipos():
            
         db.session.commit()
 
-        resposta = [{"id_tipo": id_requisicao,
+        resposta = {"id_tipo": id_requisicao,
                      "tipo_item":tipo_requisicao,
                      "mensagem":"Tipo alterado com sucesso"
-                     }]
+                     }
    
         return jsonify(resposta), 200
     
@@ -115,10 +115,10 @@ def metodo_deletar_tipos():
         db.session.delete(tipo_a_ser_deletado) 
         db.session.commit()
 
-        resposta = [{"id_tipo": id_requisicao,
+        resposta = {"id_tipo": id_requisicao,
                      "tipo_item":tipo_requisicao,
                      "mensagem":"Tipo deletado com sucesso"
-                     }]
+                     }
 
         return jsonify(resposta), 200 
 

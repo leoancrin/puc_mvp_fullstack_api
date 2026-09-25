@@ -83,11 +83,11 @@ def metodo_cadastrar_item():
         db.session.add(item_cadastrado)
         db.session.commit()
 
-        resposta =[{"tipo":tipo_item_requisicao, 
+        resposta ={"tipo":tipo_item_requisicao, 
                     "nome_item":nome_item_requisicao, 
                     "valor_item":valor_item_requisicao,
                     "mensagem": "Item cadastrado com sucesso"
-                    }]       
+                    }       
 
         return jsonify(resposta), 200
 
@@ -156,13 +156,13 @@ def metodo_alterar_item_colecionável():
 
         db.session.commit()
 
-        resposta = [{
+        resposta = {
             "id_item":item_a_alterar.id_item,
             "tipo":tipo_item_requisicao,
             "nome_item":nome_item_requisicao,
             "valor_item": valor_item_requisicao,
             "mensagem":"Item alterado com sucesso"
-            }]
+            }
 
         return jsonify(resposta), 200
 
@@ -195,11 +195,11 @@ def metodo_deletar_item_colecionável():
         db.session.delete(item_a_ser_deletado) 
         db.session.commit()
 
-        resposta = [{"tipo":tipo_item_requisicao,
+        resposta = {"tipo":tipo_item_requisicao,
                      "nome_item":nome_item_requisicao,
                      "valor_item":valor_item_requisicao,
                      "mensagem": "Item deletado com sucesso"
-                     }]
+                     }
             
         return jsonify(resposta), 200
 
