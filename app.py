@@ -39,7 +39,7 @@ def hello_world():
 # Rotas relacionadas aos tipos de itens
 @app.post('/cadastrar/tipos', tags=[tipo_item_tag], 
           responses={
-              200: TipoItemSchema,
+              200: CadastraTipoItemSchema,
               400: ErroSchema,
               409: ErroSchema
             })
