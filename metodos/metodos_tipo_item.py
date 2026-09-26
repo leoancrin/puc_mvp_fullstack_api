@@ -96,6 +96,13 @@ def metodo_deletar_tipos():
     valida_requisicao(tipo_requisicao, id_requisicao)
 
     try:
+
+        select_item_colecionavel = db.select(ItensColecionaveis).filter_by(tipo=id_requisicao)
+        tipo_existente_no_item = db.session.execute(select_item_colecionavel).scalar_one_or_none()
+
+        if tipo_existente_no_item:
+            return jsonify({"Erro": "Não permitido deletar tipo com item cadastrado "}), 409
+
         select_tipo_a_ser_deletado = db.select(TipoItemColecionavel).filter_by(id_tipo=id_requisicao)
         tipo_a_ser_deletado = db.session.execute(select_tipo_a_ser_deletado).scalar_one_or_none()
 
@@ -104,13 +111,6 @@ def metodo_deletar_tipos():
 
         if tipo_a_ser_deletado.tipo_item != tipo_requisicao:
             return jsonify({"Erro": "Verifique se o nome do tipo está correto"}), 409
-
-        select_item_colecionavel = db.select(ItensColecionaveis).filter_by(tipo=id_requisicao)
-        tipo_existente_no_item = db.session.execute(select_item_colecionavel).scalar_one_or_none()
-
-        if tipo_existente_no_item:
-            return jsonify({"Erro": "Não permitido deletar tipo com item cadastrado "}), 409
-
 
         db.session.delete(tipo_a_ser_deletado) 
         db.session.commit()
