@@ -178,7 +178,7 @@ def metodo_deletar_item_colecionável():
     try:
         id_item_requisicao, tipo_item_requisicao, nome_item_requisicao, valor_item_requisicao = receber_requisicao_completa()
 
-        verifica_tipo_existente(tipo_item_requisicao)
+        tipo_existe = verifica_tipo_existente(tipo_item_requisicao)
 
         select_item_colecionavel = db.select(ItensColecionaveis).filter_by(id_item=id_item_requisicao)
         item_a_ser_deletado = db.session.execute(select_item_colecionavel).scalar_one_or_none()
@@ -189,8 +189,17 @@ def metodo_deletar_item_colecionável():
         if item_a_ser_deletado.nome_item != nome_item_requisicao:
             return jsonify({"Erro":"Verifique o nome do item informado"}), 404
 
-        if item_a_ser_deletado.tipo != tipo_item_requisicao:
-            return jsonify({"Erro":"Verifique o tipo do item informado"}), 404
+        if item_a_ser_deletado.tipo != tipo_existe.id_tipo:
+            return jsonify({"Erro":"Verifique o tipo do item informado"}), 409 
+
+        select_nome_tipo = db.select(TipoItemColecionavel).filter_by(tipo_item=tipo_item_requisicao)
+        nome_do_tipo = db.session.execute(select_nome_tipo).scalar_one_or_none()
+
+        if nome_do_tipo is None:
+            return jsonify({"Erro":"Tipo informado não existe"}), 404
+        
+        if item_a_ser_deletado.tipo != nome_do_tipo.id_tipo:
+            return jsonify({"Erro":"Verifique o tipo do item informado"}), 409
         
         db.session.delete(item_a_ser_deletado) 
         db.session.commit()
