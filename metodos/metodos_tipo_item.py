@@ -1,6 +1,7 @@
 from flask import request, jsonify
 from modelos.itens_colecionaveis import ItensColecionaveis
 from modelos.tipos_item import TipoItemColecionavel
+from sqlalchemy import exists
 
 from extensions import db
 
@@ -97,11 +98,11 @@ def metodo_deletar_tipos():
 
     try:
 
-        select_item_colecionavel = db.select(ItensColecionaveis).filter_by(tipo=id_requisicao)
-        tipo_existente_no_item = db.session.execute(select_item_colecionavel).scalar_one_or_none()
+        select_item_colecionavel = db.select(exists().where(ItensColecionaveis.tipo == id_requisicao))
+        tipo_existente_no_item = db.session.execute(select_item_colecionavel)
 
         if tipo_existente_no_item:
-            return jsonify({"Erro": "Não permitido deletar tipo com item cadastrado "}), 409
+            return jsonify({"Erro": "Existe item cadastrado com esse tipo. Confirme que nenhum item está vinculado a esse tipo"}), 409
 
         select_tipo_a_ser_deletado = db.select(TipoItemColecionavel).filter_by(id_tipo=id_requisicao)
         tipo_a_ser_deletado = db.session.execute(select_tipo_a_ser_deletado).scalar_one_or_none()
