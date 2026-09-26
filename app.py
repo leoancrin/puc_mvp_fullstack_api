@@ -132,7 +132,7 @@ def alterar_itens(body: ItemColecionavelBodyCompleto):
     """
         Altera um item colecionável cadastrado anteriormente
     """
-    return metodo_alterar_item_colecionável()
+    return metodo_alterar_item_colecionavel()
 
 @app.delete('/deletar/itens', tags=[item_colecionavel_tag],
             responses={
@@ -144,4 +144,4 @@ def deletar_itens(body: ItemColecionavelBodyCompleto):
     """
         Deleta item colecionável cadastrado
     """
-    return metodo_deletar_item_colecionável()
+    return metodo_deletar_item_colecionavel()
