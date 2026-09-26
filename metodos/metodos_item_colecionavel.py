@@ -64,12 +64,6 @@ def metodo_cadastrar_item():
     try:
         nome_item_requisicao, tipo_item_requisicao, valor_item_requisicao = receber_requisicao_sem_id()
 
-        item_cadastrado = ItensColecionaveis(
-            tipo = tipo_item_requisicao,
-            nome_item = nome_item_requisicao,
-            valor_item = valor_item_requisicao
-        )
-
         select_tipo_existente = db.select(TipoItemColecionavel).filter_by(tipo_item=tipo_item_requisicao)
         tipo_existente = db.session.execute(select_tipo_existente).scalar_one_or_none()
         if tipo_existente is None:
@@ -79,6 +73,12 @@ def metodo_cadastrar_item():
         item_existente = db.session.execute(select_item_colecionavel).scalar_one_or_none()
         if item_existente:
             return jsonify({"Erro":"Item já cadastrado"}), 409
+
+        item_cadastrado = ItensColecionaveis(
+            tipo = tipo_existente.id_tipo,
+            nome_item = nome_item_requisicao,
+            valor_item = valor_item_requisicao
+            )
 
         db.session.add(item_cadastrado)
         db.session.commit()
